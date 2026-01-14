@@ -28,7 +28,6 @@ set (CMAKE_DEBUG_POSTFIX "d")
 
 include(FindPkgConfig)
 include(VCICommon)
-include(VCIQt)
 include(VCIOutput)
 
 
@@ -73,7 +72,6 @@ set(COMISO_ENABLE_MUMPS   ${COMISO_ENABLE_DEFAULT}  CACHE BOOL "Build CoMISo wit
 set(COMISO_ENABLE_OSI     ${COMISO_ENABLE_DEFAULT}  CACHE BOOL "Build CoMISo with OSI (if found)" )
 set(COMISO_ENABLE_OSQP    ${COMISO_ENABLE_DEFAULT}   CACHE BOOL "Build CoMISo with OSQP (if found)" )
 set(COMISO_ENABLE_PETSC   ${COMISO_ENABLE_DEFAULT}  CACHE BOOL "Build CoMISo with PETSc (if found)." )
-set(COMISO_ENABLE_QT      ${COMISO_ENABLE_DEFAULT}  CACHE BOOL "Build CoMISo with Qt widgets (if found)")
 set(COMISO_ENABLE_SUITESPARSE_DEFAULT   ${COMISO_ENABLE_DEFAULT}  CACHE BOOL "Default for COMISO_ENABLE_SUITESPARSE_* - only has an effect on first cmake run!" )
 set(COMISO_ENABLE_TAO     ${COMISO_ENABLE_DEFAULT}  CACHE BOOL "Build CoMISo with TAO (if found)." )
 set(COMISO_ENABLE_TAUCS   ${COMISO_ENABLE_DEFAULT}  CACHE BOOL "Build CoMISo with TAUCS (if found)" )
@@ -82,12 +80,6 @@ set(COMISO_ENABLE_TINYAD  ${COMISO_ENABLE_DEFAULT}  CACHE BOOL "Build CoMISo wit
 set(COMISO_OSQP_PRERELEASE_API FALSE CACHE BOOL "Use pre-1.0 API of OSQP (DEPRECATED)" )
 
 set (COMISO_ENABLE_DEBUG_OUTPUT TRUE CACHE BOOL "Enable CoMISo Debug Output")
-
-### Deprecated aliases:
-if(DEFINED WANT_COMISO_QT)
-    message(WARNING "CoMISo: Legacy option WANT_COMISO_QT was passed, use COMISO_ENABLE_QT instead.")
-    set(COMISO_ENABLE_QT ${WANT_COMISO_QT})
-endif()
 
 if (DISABLE_MPI)
     message(WARNING "CoMISo: Legacy option DISABLE_MPI was passed, use COMISO_ENABLE_MPI=FALSE instead.")
@@ -241,24 +233,6 @@ if (NOT TARGET Eigen3::Eigen)
 endif()
 target_link_libraries     (CoMISo PUBLIC Eigen3::Eigen)
 set (COMISO_EIGEN3_CONFIG_FILE_SETTINGS "#define COMISO_EIGEN3_AVAILABLE 1" )
-
-if( COMISO_ENABLE_QT )
-  set(QT_REQUIRED_PACKAGES Core Widgets)
-  vci_qt ()
-
-  if( QT_FOUND)
-    target_sources(CoMISo PRIVATE ./QtWidgets/MISolverDialogUI.cc)
-    set_target_properties (CoMISo PROPERTIES
-        AUTOMOC ON
-        AUTOUIC ON)
-    target_link_libraries(CoMISo PUBLIC ${QT_LIBRARIES})
-    set (COMISO_QT_CONFIG_FILE_SETTINGS "#define COMISO_QT_AVAILABLE 1" )
-  else()
-    set (COMISO_QT_CONFIG_FILE_SETTINGS "#define COMISO_QT_AVAILABLE 0" )
-  endif()
-endif( COMISO_ENABLE_QT )
-
-
 
 set(NEED_LAPACK "")
 
