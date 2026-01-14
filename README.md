@@ -1,3 +1,5 @@
+This is a modified version of https://gitlab.vci.rwth-aachen.de:9000/CoMISo/CoMISo all rights and credit goes to the authors <zimmer@informatik.rwth-aachen.de> and <bommes@informatik.rwth-aachen.de
+
 ![CoMISo](Logo.png)
 
 # CoMISo -- Constrained Mixed-Integer Solver
